@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>OpenAI API Text Generator</title>
+    <style>
+        /* Add some basic styling for the website */
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Style the input form */
+        #prompt-form {
+            margin: 10px;
+            text-align: left;
+        }
+
+        /* Style the generated text container */
+        #generated-text {
+            background-color: #f2f2f2;
+            margin: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>OpenAI API Text Generator</h1>
+    <form id="prompt-form">
+        <label for="prompt">Enter a prompt:</label>
+        <input type="text" id="prompt" placeholder="What is the meaning of life?">
+        <button type="button" id="generate-button" onclick="generateText()">Generate Text</button>
+    </form>
+    <div id="generated-text"></div>
+
+    <script>
+        function generateText() {
+            // Get the input prompt from the form
+            const prompt = document.getElementById('prompt').value;
+
+            const apiKey = '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';
+            
+            // The API endpoint for text generation
+            const endpoint = 'https://api.openai.com/v1/engines/code-davinci-002/completions'
+            
+            // Prepare the headers for the request
+            const headers = {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${apiKey}`
+            };
+            
+            // Prepare the payload for the request
+            const data = {
+                prompt: prompt,
+                max_tokens: 50
+            }
+
+            // Make a POST request to the OpenAI API using fetch
+            fetch(endpoint, {
+                    method: 'POST',
+                    headers: headers,
+                    body: JSON.stringify(data)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // Get the generated text container
+                    var generatedText = document.getElementById('generated-text')
+                    generatedText.innerHTML = data['choices'][0]['text'];
+                })
+            }
+            generateText();
+        </script>
+</body>
+
+</html>
+
